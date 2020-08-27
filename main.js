@@ -10,7 +10,7 @@ class BST {
     constructor() {
         this.head = null
     }
-    // to node to tree
+    // add node to tree
     add(val) {
         let node = new Node(val)
         if (this.head == null) { this.head = node; return }
@@ -28,9 +28,55 @@ class BST {
         }
     }
 
+    // remove node from tree
+    remove(val) {
+        return !this.head
+            ? 'no nodes in this tree'
+            : this.removeHelper(this.head, val)
+    }
+    removeHelper(node, val) {
+        if (node.val == val) {
+            let newVal = this.findReplacement(node, val)
+            if (newVal.currentNode) {
+                node.val = newVal.currentNode.val
+                newVal.parent.right = newVal.currentNode.left
+            } else {
+                node.val = newVal
+            }
+            return
+        }
+        else if (node.val > val) {
+            this.removeHelper(node.left, val)
+        } else {
+            this.removeHelper(node.right, val)
+        }
+
+    }
+    // findReplacement
+    findReplacement(node, val) {
+        if (!node.left) {
+            return node.right
+        } else {
+            let currentNode = node.left
+            let parent = node
+            while (currentNode.right) {
+                if (currentNode.right.right) {
+                    parent = currentNode.right
+                    currentNode = currentNode.right.right
+                } else {
+                    parent = currentNode
+                    currentNode = currentNode.right
+                    break
+                }
+            }
+            return { parent, currentNode }
+        }
+    }
+
+
     // search for node in tree
     search(val) {
-        if (this.head == null) {
+        if (!this.head) {
             return false
         } else {
             return this.searchHelper(this.head, val)
@@ -48,4 +94,5 @@ class BST {
                 : false
         }
     }
+
 }
