@@ -27,4 +27,25 @@ class BST {
                 : this.addHelper(parent.right, child)
         }
     }
+
+    // search for node in tree
+    search(val) {
+        if (this.head == null) {
+            return false
+        } else {
+            return this.searchHelper(this.head, val)
+        }
+    }
+    searchHelper(node, val) {
+        if (node.val == val) return true
+        else if (node.val > val) {
+            return node.left
+                ? this.searchHelper(node.left, val)
+                : false
+        } else {
+            return node.right
+                ? this.searchHelper(node.right, val)
+                : false
+        }
+    }
 }
